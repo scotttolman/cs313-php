@@ -7,6 +7,7 @@
     <title>Scott Tolman</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="tolman.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <script src="tolman.js"></script>
 </head>
 
