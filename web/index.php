@@ -17,7 +17,7 @@
         <p id="info">My name is Scott Tolman. I am a Software Engineering major. I do school full-time and don't currently work outside
                 the house. I have 6 kids ages 7, 7, 5, 3, 0, and 0. I don't really know what I am interested in because I haven't
                 had time to figure that out with all these kids. I do enjoy programming though.</p>
-        <img src="family.jpg" alt="Family Photo" id="picture" onmouseover="changePic()" onmouseout="changeBack()">
+        <img src="family.JPG" alt="Family Photo" id="picture" onmouseover="changePic()" onmouseout="changeBack()">
     </div>
 </body>
 

@@ -1,7 +1,7 @@
 function changePic() {
-    document.getElementById("picture").src = "family2.jpg"
+    document.getElementById("picture").src = "family2.JPG"
 }
 
 function changeBack() {
-    document.getElementById("picture").src = "family.jpg"
+    document.getElementById("picture").src = "family.JPG"
 }
