@@ -46,7 +46,7 @@ function MinMax(val, min, max) {
 }
 
 function addItem(id) {
-    var qt = document.getElementsByName(id).value;
+    var qt = document.getElementById(id).value;
     switch (id) {
         case "MD":
             MD = qt;
@@ -73,4 +73,16 @@ function addItem(id) {
             MB = qt;
             break;
     }
+}
+
+function sendValues() {
+    document.getElementById("_MD").value = MD;
+    document.getElementById("_FB").value = FB;
+    document.getElementById("_WG").value = WG;
+    document.getElementById("_TB").value = TB;
+    document.getElementById("_PB").value = PB;
+    document.getElementById("_GB").value = GB;
+    document.getElementById("_UB").value = UB;
+    document.getElementById("_MB").value = MB;
+    document.forms['hiddenCart'].submit();        
 }
