@@ -1,3 +1,9 @@
+// TMs
+var MD = 0, FB = 0, WG = 0, TB = 0;
+// Balls
+var PB = 0, GB = 0, UB = 0, MB = 0;
+
+
 function colorChange() {
     switch(document.getElementById("banner").style.backgroundColor){
         case "yellow":
@@ -36,5 +42,35 @@ function MinMax(val, min, max) {
     }
     else {
         return val;
+    }
+}
+
+function addItem(id) {
+    var qt = document.getElementsByName(id).value;
+    switch (id) {
+        case "MD":
+            MD = qt;
+            break;
+        case "FB":
+            FB = qt;
+            break;
+        case "WG":
+            WG = qt;
+            break;
+        case "TB":
+            TB = qt;
+            break;
+        case "PB":
+            PB = qt;
+            break;
+        case "GB":
+            GB = qt;
+            break;
+        case "UB":
+            UB = qt;
+            break;
+        case "MB":
+            MB = qt;
+            break;
     }
 }
