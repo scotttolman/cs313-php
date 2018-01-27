@@ -116,7 +116,6 @@ session_start(); //must be first thing on page
             <input type="hidden" name="_GB" id="_GB">
             <input type="hidden" name="_UB" id="_UB">
             <input type="hidden" name="_MB" id="_MB">
-            <input type="submit" value="submit">
         </form>
     </div>
 </body>

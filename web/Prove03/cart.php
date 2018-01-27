@@ -12,8 +12,6 @@ $GB = $_POST["_GB"];
 $UB = $_POST["_UB"];
 $MB = $_POST["_MB"];
 
-echo "Cart Page. MD = $MD";
-
 echo 
 "$MD
 <br>
