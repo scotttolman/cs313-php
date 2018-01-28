@@ -19,21 +19,21 @@ if ($_SESSION['item']['MB'])
     $MB = $_SESSION['item']['MB']; 
 
 if ($_POST["_MD"])    
-    $MD = $_POST["_MD"];
+    $MD = htmlspecialchars($_POST["_MD"]);
 if ($_POST["_FB"])  
-    $FB = $_POST["_FB"];
+    $FB = htmlspecialchars($_POST["_FB"]);
 if ($_POST["_WG"])  
-    $WG = $_POST["_WG"];
+    $WG = htmlspecialchars($_POST["_WG"]);
 if ($_POST["_TB"])  
-    $TB = $_POST["_TB"];
+    $TB = htmlspecialchars($_POST["_TB"]);
 if ($_POST["_PB"])  
-    $PB = $_POST["_PB"];
+    $PB = htmlspecialchars($_POST["_PB"]);
 if ($_POST["_GB"])  
-    $GB = $_POST["_GB"];
+    $GB = htmlspecialchars($_POST["_GB"]);
 if ($_POST["_UB"])  
-    $UB = $_POST["_UB"];
+    $UB = htmlspecialchars($_POST["_UB"]);
 if ($_POST["_MB"])  
-    $MB = $_POST["_MB"];   
+    $MB = htmlspecialchars($_POST["_MB"]);   
 
 if ($MD)
     $_SESSION['item']['MD'] = $MD;
@@ -62,17 +62,6 @@ if ($MB)
 <script src="checkout.js"></script>
 </head>
 <body>
-        
-    <?php
-    echo "MD = $MD";
-    echo " FB = $FB";
-    echo " WG = $WG";
-    echo " TB = $TB";
-    echo " PB = $PB";
-    echo " GB = $GB";
-    echo " UB = $UB";
-    echo " MB = $MB";
-    ?>
 
     <div id="banner" class="grid-container5" onmouseover="colorChange()">
         <div>
@@ -268,11 +257,15 @@ if ($MB)
             <form action="index.php">
                 <input type="submit" class="submit" value="Back to store">
             </form>
-            <form action="confirmation.php">
+            <form action="confirmation.php" class="inp" method="POST">
+                Full Name <input type="text" name="name" class="inp">
+                Address <input type="text" name="address" class="inp">
+                City <input type="text" name="city" class="inp">
+                State <input type="text" name="state" class="inp">
+                Zip <input type="text" name="zip" class="inp">
                 <input type="submit" class="submit" value="Place Order">
             </form>
-        </div>
-        
+        </div>        
     </div>
 </body>
 </html>

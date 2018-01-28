@@ -37,10 +37,8 @@ img {
 	display: block;
 }
 
-input {
-    padding: 3px;
-    size: 3;
-    width: 3.25em;
+.inp {
+    width: auto;
 }
 
 .submit {

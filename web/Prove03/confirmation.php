@@ -18,6 +18,12 @@ if ($_SESSION['item']['UB'])
 if ($_SESSION['item']['MB'])
     $MB = $_SESSION['item']['MB']; 
 
+$name = htmlspecialchars($_POST['name']);
+$address = htmlspecialchars($_POST['address']);
+$city = htmlspecialchars($_POST['city']);
+$state = htmlspecialchars($_POST['state']);
+$zip = htmlspecialchars($_POST['zip']);
+
 ?>
 
 <html>
@@ -28,17 +34,6 @@ if ($_SESSION['item']['MB'])
 <script src="confirmation.js"></script>
 </head>
 <body>
-        
-    <?php
-    echo "MD = $MD";
-    echo " FB = $FB";
-    echo " WG = $WG";
-    echo " TB = $TB";
-    echo " PB = $PB";
-    echo " GB = $GB";
-    echo " UB = $UB";
-    echo " MB = $MB";
-    ?>
 
     <div id="banner" class="grid-container5" onmouseover="colorChange()">
         <div>
@@ -57,6 +52,20 @@ if ($_SESSION['item']['MB'])
                 <img src="squirtle.png" alt="Pokeball">
             </div>
     </div>
+    <?php
+    echo "
+    <p>Thank you for your purchase, $name.</p>
+    <br>
+    <p>We will ship your purchase to:</p>
+    <br>
+    $address
+    <br>
+    $city
+    <br>
+    $state
+    <br>
+    $zip";
+    ?>
     <div id="TMCatalog" class="grid-container2">
         <?php
         if ($MD > 0) {

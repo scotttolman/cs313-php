@@ -28,17 +28,6 @@ if ($_SESSION['item']['MB'])
 <script src="pokestore.js"></script>
 </head>
 <body onload="showTMs()">
-    
-    <?php
-    echo "MD = $MD";
-    echo " FB = $FB";
-    echo " WG = $WG";
-    echo " TB = $TB";
-    echo " PB = $PB";
-    echo " GB = $GB";
-    echo " UB = $UB";
-    echo " MB = $MB";
-    ?>
 
     <script>
         // TMs
