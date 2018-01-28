@@ -17,16 +17,6 @@ function colorChange() {
     }
 }
 
-function showTMs() {
-    document.getElementById("TMCatalog").style.display = "grid";
-    document.getElementById("BallCatalog").style.display = "none";
-}
-
-function showBalls() {
-    document.getElementById("TMCatalog").style.display = "none";
-    document.getElementById("BallCatalog").style.display = "grid";
-}
-
 function MinMax(val, min, max) {
     if (val > max) {
         return max;
@@ -44,39 +34,36 @@ function addItem(id) {
     switch (id) {
         case "MD":
             MD = qt;
+            document.getElementById("_MD").value = MD;
             break;
         case "FB":
             FB = qt;
+            document.getElementById("_FB").value = FB;
             break;
         case "WG":
             WG = qt;
+            document.getElementById("_WG").value = WG;
             break;
         case "TB":
             TB = qt;
+            document.getElementById("_TB").value = TB;
             break;
         case "PB":
             PB = qt;
+            document.getElementById("_PB").value = PB;
             break;
         case "GB":
             GB = qt;
+            document.getElementById("_GB").value = GB;
             break;
         case "UB":
             UB = qt;
+            document.getElementById("_UB").value = UB;
             break;
         case "MB":
             MB = qt;
+            document.getElementById("_MB").value = MB; 
             break;
     }
-}
-
-function sendValues() {
-    document.getElementById("_MD").value = MD;
-    document.getElementById("_FB").value = FB;
-    document.getElementById("_WG").value = WG;
-    document.getElementById("_TB").value = TB;
-    document.getElementById("_PB").value = PB;
-    document.getElementById("_GB").value = GB;
-    document.getElementById("_UB").value = UB;
-    document.getElementById("_MB").value = MB;
-    document.forms['hiddenCart'].submit();        
+    document.forms['hiddenCartUpdate'].submit();
 }

@@ -1,0 +1,90 @@
+body {
+    border: 3em solid rgb(80, 80, 80);
+    font-family: fantasy;
+    text-align: center;
+    background-color: rgb(128, 128, 128)
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 5px;
+}
+
+.grid-container2 {
+    display: grid;
+    grid-template-columns: 67% 33%;
+    grid-gap: 5px;
+}
+
+.grid-container5-5 {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 5px;
+}
+
+.grid-container5 {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-gap: 5px;
+}
+
+img {
+    height: 8em;
+    width: 8em;
+    margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+input {
+    padding: 3px;
+    size: 3;
+    width: 3.25em;
+}
+
+.submit {
+    width: auto;
+    font-size: 2em;
+}
+
+#title > a {
+    font-size: 7em;
+    color: whitesmoke
+}
+
+#banner {
+    background-color: rgb(80, 80, 80)
+}
+
+#TM1, #TM1Cart{
+    background-color: green;
+}
+
+#TM2, #TM2Cart {
+    background-color: red;
+}
+
+#TM3, #TM3Cart {
+    background-color: blue;
+}
+
+#TM4, #TM4Cart {
+    background-color: yellow;
+}
+
+#ball1, #Ball1Cart {
+    background-color: #cd7f32;
+}
+
+#ball2, #Ball2Cart {
+    background-color: silver;
+}
+
+#ball3, #Ball3Cart {
+    background-color: gold;
+}
+
+#ball4, #Ball4Cart {
+    background-color: #e5e4e2;
+}
