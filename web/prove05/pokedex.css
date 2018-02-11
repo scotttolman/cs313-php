@@ -1,9 +1,9 @@
-#login {
+.login {
     display: block;
     margin: auto;
     text-align: center;
 }
 
-#banner {
+.banner {
     text-align: center;
 }

@@ -8,7 +8,7 @@ DROP TABLE trainers CASCADE;
 CREATE TABLE badges (
     badge_id    smallserial     PRIMARY KEY,
     badge_name  VARCHAR(50)     NOT NULL UNIQUE,
-    effect      TEXT            NOT NULL
+    effect      REAL            NOT NULL
 );
 
 CREATE TABLE element_types (
@@ -50,8 +50,20 @@ CREATE TABLE trainers (
     name        VARCHAR(50)     NOT NULL UNIQUE,
     password    varchar(64)     NOT NULL,
     badge       VARCHAR(50)     REFERENCES badges(badge_name),
-    pokemon     VARCHAR(50)     REFERENCES pokemon(poke_name)
+    pokemon_1   VARCHAR(50)     REFERENCES pokemon(poke_name),
+    pokemon_2   VARCHAR(50)     REFERENCES pokemon(poke_name),
+    pokemon_3   VARCHAR(50)     REFERENCES pokemon(poke_name)
 );
+
+
+INSERT INTO badges (badge_name, effect) VALUES('Boulder', 1.05);
+INSERT INTO badges (badge_name, effect) VALUES('Cascade', 1.10);
+INSERT INTO badges (badge_name, effect) VALUES('Thunder', 1.15);
+INSERT INTO badges (badge_name, effect) VALUES('Rainbow', 1.20);
+INSERT INTO badges (badge_name, effect) VALUES('Soul', 1.25);
+INSERT INTO badges (badge_name, effect) VALUES('Marsh', 1.30);
+INSERT INTO badges (badge_name, effect) VALUES('Volcano', 1.35);
+INSERT INTO badges (badge_name, effect) VALUES('Earth', 1.50);
 
 
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'normal');
@@ -69,6 +81,14 @@ INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'bug');
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'rock');
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'ghost');
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'dragon');
+
+
+INSERT INTO pokemon (poke_name, type_1, hp, attack, defense, speed) VALUES ('Bulbasaur', 'grass', 10, 10, 10, 10);
+INSERT INTO pokemon (poke_name, type_1, hp, attack, defense, speed) VALUES ('Charmander', 'fire', 10, 10, 10, 10);
+INSERT INTO pokemon (poke_name, type_1, hp, attack, defense, speed) VALUES ('Squirtle', 'water', 10, 10, 10, 10);
+
+
+INSERT INTO trainers (name, password, badge, pokemon_1, pokemon_2, pokemon_3) VALUES('Scott', 'Tolman', 'Boulder', 'Bulbasaur', 'Charmander', 'Squirtle');
 
 
 INSERT INTO type_vs_type VALUES(nextval('type_vs_type_vs_id_seq'),'normal', 'normal',    1);

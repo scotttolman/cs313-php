@@ -12,7 +12,8 @@ if (isset($_POST['password'])) {
 }
 
 if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
-    require 'getPassword.php';
+    require 'PDOconnect.php';
+    require 'PDOgetPassword.php';
 }
 
 ?>
@@ -24,11 +25,11 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="login.css" />
-    <script src="login.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="pokedex.css" />
+    <script src="pokedex.js"></script>
 </head>
 <body>
-    <div>
+    <div class="banner">
         <?php
         if ($password == $pwd){
             echo "<h1> Welcome $username </h1>";

@@ -12,7 +12,8 @@ if (isset($_POST['tpassword'])) {
 }
 
 if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
-    require 'addUser.php';   
+    require 'PDOconnect.php';
+    require 'PDOaddUser.php';   
 }
 
 ?>
@@ -24,8 +25,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Trainer Added</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="added.css" />
-    <script src="added.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="pokedex.css" />
+    <script src="pokedex.js"></script>
 </head>
 <body>
     <h1>Congratulations you are now a registered Pokémon trainer</h1>
