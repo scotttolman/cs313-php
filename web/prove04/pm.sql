@@ -1,7 +1,6 @@
 DROP TABLE badges CASCADE;
 DROP TABLE element_types CASCADE;
 DROP TABLE type_vs_type CASCADE;
-DROP TABLE moves CASCADE;
 DROP TABLE pokemon CASCADE;
 DROP TABLE trainers CASCADE;
 
@@ -23,26 +22,16 @@ CREATE TABLE type_vs_type (
     multiplier  DECIMAL         NOT NULL
 );
 
-CREATE TABLE moves (
-    move_id     smallserial     PRIMARY KEY,
-    move_name   VARCHAR(50)     NOT NULL UNIQUE,
-    element     VARCHAR(50)     REFERENCES element_types(type_name),
-    power       SMALLINT        NOT NULL
-);
-
 CREATE TABLE pokemon (
     pokemon_id  smallserial     PRIMARY KEY,
     poke_name   VARCHAR(50)     NOT NULL UNIQUE,
+    level       SMALLINT        NOT NULL,
     type_1      VARCHAR(50)     REFERENCES element_types(type_name),
     type_2      VARCHAR(50)     REFERENCES element_types(type_name),
     hp          SMALLINT        NOT NULL,
     attack      SMALLINT        NOT NULL,
     defense     SMALLINT        NOT NULL,
-    speed       SMALLINT        NOT NULL,
-    move_1      VARCHAR(50)     REFERENCES moves(move_name),
-    move_2      VARCHAR(50)     REFERENCES moves(move_name),
-    move_3      VARCHAR(50)     REFERENCES moves(move_name),
-    move_4      VARCHAR(50)     REFERENCES moves(move_name)
+    speed       SMALLINT        NOT NULL
 );
 
 CREATE TABLE trainers (
@@ -54,6 +43,8 @@ CREATE TABLE trainers (
     pokemon_2   VARCHAR(50)     REFERENCES pokemon(poke_name),
     pokemon_3   VARCHAR(50)     REFERENCES pokemon(poke_name)
 );
+
+ALTER TABLE pokemon ADD COLUMN  trainer VARCHAR(50) NOT NULL REFERENCES trainers(name);
 
 
 INSERT INTO badges (badge_name, effect) VALUES('Boulder', 1.05);
@@ -83,12 +74,13 @@ INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'ghost');
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'dragon');
 
 
-INSERT INTO pokemon (poke_name, type_1, hp, attack, defense, speed) VALUES ('Bulbasaur', 'grass', 10, 10, 10, 10);
-INSERT INTO pokemon (poke_name, type_1, hp, attack, defense, speed) VALUES ('Charmander', 'fire', 10, 10, 10, 10);
-INSERT INTO pokemon (poke_name, type_1, hp, attack, defense, speed) VALUES ('Squirtle', 'water', 10, 10, 10, 10);
+INSERT INTO trainers (name, password) VALUES('Scott', 'Tolman');
 
 
-INSERT INTO trainers (name, password, badge, pokemon_1, pokemon_2, pokemon_3) VALUES('Scott', 'Tolman', 'Boulder', 'Bulbasaur', 'Charmander', 'Squirtle');
+INSERT INTO pokemon (poke_name, level, trainer, type_1, hp, attack, defense, speed) VALUES ('Bulbasaur',1, 'Scott', 'grass', 4, 3, 1, 2);
+INSERT INTO pokemon (poke_name, level, trainer, type_1, hp, attack, defense, speed) VALUES ('Ivysaur', 12, 'Scott', 'grass', 35, 20, 10, 10);
+INSERT INTO pokemon (poke_name, level, trainer, type_1, hp, attack, defense, speed) VALUES ('Charmander', 1, 'Scott', 'fire', 3, 4, 2, 1);
+INSERT INTO pokemon (poke_name, level, trainer, type_1, hp, attack, defense, speed) VALUES ('Squirtle', 1, 'Scott', 'water', 4, 2, 3, 1);
 
 
 INSERT INTO type_vs_type VALUES(nextval('type_vs_type_vs_id_seq'),'normal', 'normal',    1);

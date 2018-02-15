@@ -2,19 +2,34 @@
 
 session_start();
 
+try
+  {
+    $dbuser = 'postgres';
+    $dbpassword = 'CS313-PHP';
+    $db = new PDO('pgsql:host=127.0.0.1;dbname=postgres', $dbuser, $dbpassword);
+    $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+  }
+  catch (PDOException $ex)
+  {
+    echo 'Error!: ' . $ex->getMessage();
+    die();
+  }
+
 if (isset($_POST['username'])) {    
     $username = htmlspecialchars($_POST['username']);
     $_SESSION['username'] = $username;    
 }
-if (isset($_POST['password'])) {
-    $password = htmlspecialchars($_POST['password']);
-    $_SESSION['password'] = $password;
-}
 
-if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
-    require 'PDOconnect.php';
-    require 'PDOgetPassword.php';
-}
+$stmt = $db->prepare('SELECT password FROM trainers WHERE name = :username');
+  $stmt->bindValue(':username', $username);
+  $stmt->execute();
+  $rows = $stmt->fetch();
+  $dbPass = $rows[0];
+
+if ($dbPass == $_POST['password'])
+    $_SESSION[$username]['auth'] = true;
+else
+    $_SESSION[$username]['auth'] = false;
 
 ?>
 
@@ -31,7 +46,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 <body>
     <div class="banner">
         <?php
-        if ($password == $pwd){
+        if ($_SESSION[$username]['auth']){
             echo "<h1> Welcome $username </h1>";
             echo "click <a href='trainer.php'> here </a> to go to your account";
         }
@@ -42,4 +57,4 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
         ?>
     </div>
 </body>
-</html>
+</html
