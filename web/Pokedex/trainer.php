@@ -48,6 +48,44 @@ $pokemon_1 = $row['pokemon_1'];
 $pokemon_2 = $row['pokemon_2'];
 $pokemon_3 = $row['pokemon_3'];
 
+$stmt = $db->prepare('SELECT poke_name, level, type_1, type_2, hp, attack, defense, speed FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
+$stmt->bindValue(':name', $pokemon_1);
+$stmt->bindValue(':trainer', $username);
+$stmt->execute();
+$p1 = $stmt->fetch(PDO::FETCH_NUM);
+
+$stmt = $db->prepare('SELECT poke_name, level, type_1, type_2, hp, attack, defense, speed FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
+$stmt->bindValue(':name', $pokemon_2);
+$stmt->bindValue(':trainer', $username);
+$stmt->execute();
+$p2 = $stmt->fetch(PDO::FETCH_NUM);
+
+$stmt = $db->prepare('SELECT poke_name, level, type_1, type_2, hp, attack, defense, speed FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
+$stmt->bindValue(':name', $pokemon_3);
+$stmt->bindValue(':trainer', $username);
+$stmt->execute();
+$p3 = $stmt->fetch(PDO::FETCH_NUM);
+
+$stmt = $db->prepare('SELECT name, pokemon_1, pokemon_2, pokemon_3 FROM trainers');
+$stmt->execute();
+$profiles = $stmt->fetchAll(PDO::FETCH_NUM);
+
+// echo "<pre>" . print_r($profiles,1) . "</pre>";
+
+$opponents = array();
+foreach ($profiles as $trainers) {
+    for ($i = 1; $i < 4; $i++) {
+        $sql = "SELECT poke_name, level, type_1, type_2, hp, attack, defense, speed FROM pokemon WHERE poke_name = :name AND trainer = :trainer";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':name', $trainers[$i]);
+        $stmt->bindValue(':trainer', $trainers[0]);
+        $stmt->execute();
+        array_push($opponents, $stmt->fetch(PDO::FETCH_NUM));
+    }
+}
+
+// echo "<pre>" . print_r($opponents,1) . "</pre>";
+
 ?>
 
 <!DOCTYPE html>
@@ -61,15 +99,74 @@ $pokemon_3 = $row['pokemon_3'];
     <script src="pokedex.js"></script>
 </head>
 <body>
+    <div>
     <button><a href="choosePokemon.php">Choose Pokemon</a></button>
+    <button><a href="logout.php">logout</a></button>
+    </div>
+
+    <br>
+    <br>
     <div class="header"></div>
     <div class="body">
         <div class="trainerInfo">
-            <h2>Trainer name: <span id="trainerName"><?php echo $username; ?></span></h2><br>
-            <h3>Badge: <span id="trainerBadges"><?php echo $badge; ?></span></h3><br>
-            <h3>First Pokémon: <span id="pokemon1"><?php echo $pokemon_1; ?></span></h3><br>
-            <h3>Second Pokémon: <span id="pokemon2"><?php echo $pokemon_2; ?></span></h3><br>
-            <h3>Third Pokémon: <span id="pokemon3"><?php echo $pokemon_3; ?></span></h3><br>
+            <table>
+                <?php
+                echo "
+                <tr>
+                    <th colspan='8'>$username: $badge badge</th>
+                </tr>
+                <tr>
+                    <th>Pokemon</th>
+                    <th>Level</th>
+                    <th>Type 1</th>
+                    <th>Type 2</th>
+                    <th>HP</th>
+                    <th>Attack</th>
+                    <th>Defense</th>
+                    <th>Speed</th>
+                </tr>
+                <tr>";
+                    for ($i = 0; $i < 8; $i++) {
+                        echo "<td>$p1[$i]</td>";
+                    }
+                echo "
+                </tr>
+                <tr>";
+                    for ($i = 0; $i < 8; $i++) {
+                        echo "<td>$p2[$i]</td>";
+                    }
+                echo "
+                </tr>
+                <tr>";
+                    for ($i = 0; $i < 8; $i++) {
+                        echo "<td>$p3[$i]</td>";
+                    }
+                echo "
+                </tr>";
+                ?>
+            </table>
+            <?php
+            for ($i = 0; $i < $profiles.count(); $i++) {
+                global $opponents;
+                echo "<pre>" . print_r($opponents,1) . "</pre>";
+                echo "
+                <table>
+                    <tr>                        
+                        <th colspan='8'>$profiles[0]</th>
+                    </tr>
+                    <tr>
+                    ";
+                        for ($j = 0; $j < 8; $j++) {
+                            echo "<td>$opponents[$j]</td>";
+                        }
+                    echo "
+                    </tr>
+                </table>
+                ";
+            }
+            ?>
+            <br>
+            <br>
         </div>        
     </div>
 </body>
