@@ -1,5 +1,6 @@
 window.addEventListener("load", store);
 var gList = {slot:[]};
+var listCount = 0;
 
 function store() {
     var mem = document.getElementsByClassName("memory");
@@ -71,6 +72,8 @@ function storeList() {
     }
     var jList = JSON.stringify(gList);
     document.getElementById("jString").value = jList;
+    localStorage.setItem('jsonString', jList);
+    console.log(localStorage.getItem('jsonString'));
 }
     
 // Use AJAX to send data
