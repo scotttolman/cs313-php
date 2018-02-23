@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>J.A.L.D.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="jald.css" />
+    <script src="jald.js"></script>
+</head>
+<body>
+    <div id="grocery">
+        <h1>DOM Manipulation</h1>
+        <p>Here is a grocery list that uses JavaScript and DOM manipulation to create new items, 
+        <br> 
+        add them to our list, change the order, and delete them from the list.</p>
+        <br>
+        <button>Restore list from Local Storage</button>
+        <br><br>
+        <input type="text" name="text" id="text"><button onclick="addToList(text.value)">Add</button>
+        <ol id="list">
+        </ol>
+    </div>
+    <div>
+        <form id="memForm">
+            <p><label for="first">First name</label> <input type="text" name="first" id="first" class="memory" value=""></p>
+            <p><label for="last">Last name</label> <input type="text" name="last" id="last" class="memory" value=""></p>
+            <p><label for="address">Address</label> <input type="text" name="address" id="address" class="memory" value=""></p>
+            <p><label for="city">City</label> <input type="text" name="city" id="city" class="memory" value=""></p>
+            <p><label for="state">State</label> <input type="text" name="state" id="state" class="memory" value=""></p>
+            <p><label for="zip">Zip</label> <input type="text" name="zip" id="zip" class="memory" value=""></p>
+            <p><label for="instructions">Instructions</label> <input type="text" name="instructions" id="instructions" class="memory" value=""></p>
+            <p><label for="jString">JSON String</label><input type="text" name="jString" id="jString" readonly></p>
+            <br><br>
+            <input type="button" value="Save to Database" id="ajx" name="ajx" onmouseover="storeList()" onclick="ajaxSend()">
+        </form>
+        <p id="alert"></p>
+    </div>
+    <br><br><br>
+    <div>
+        <form action="" id="memForm2">
+            <p><label for="first2">First name</label> <input type="text" name="first2" id="first2" class="memory2" value=""></p>
+            <p><label for="last2">Last name</label> <input type="text" name="last2" id="last2" class="memory2" value=""></p>
+            <p><label for="address2">Address</label> <input type="text" name="address2" id="address2" class="memory2" value=""></p>
+            <p><label for="city2">City</label> <input type="text" name="city2" id="city2" class="memory2" value=""></p>
+            <p><label for="state2">State</label> <input type="text" name="state2" id="state2" class="memory2" value=""></p>
+            <p><label for="zip2">Zip</label> <input type="text" name="zip2" id="zip2" class="memory2" value=""></p>
+            <p><label for="instructions2">Instructions</label> <input type="text" name="instructions2" id="instructions2" class="memory2" value=""></p>
+        </form>
+    </div>
+    <button onclick="ajaxGet()">Retrieve List</button>
+    <p id="alert2"></p>
+</body>
+</html>
