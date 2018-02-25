@@ -7,7 +7,8 @@ DROP TABLE trainers CASCADE;
 CREATE TABLE badges (
     badge_id    smallserial     PRIMARY KEY,
     badge_name  VARCHAR(50)     NOT NULL UNIQUE,
-    effect      REAL            NOT NULL
+    effect      REAL            NOT NULL,
+    req_wins    SMALLINT        NOT Null
 );
 
 CREATE TABLE element_types (
@@ -25,9 +26,11 @@ CREATE TABLE type_vs_type (
 CREATE TABLE pokemon (
     pokemon_id  smallserial     PRIMARY KEY,
     poke_name   VARCHAR(50)     NOT NULL UNIQUE,
+    xp          SMALLINT        NOT NULL,
+    lvl_up      SMALLINT        NOT NULL,
     level       SMALLINT        NOT NULL,
+    stat_points SMALLINT        NOT NULL,
     type_1      VARCHAR(50)     REFERENCES element_types(type_name),
-    type_2      VARCHAR(50)     REFERENCES element_types(type_name),
     hp          SMALLINT        NOT NULL,
     attack      SMALLINT        NOT NULL,
     defense     SMALLINT        NOT NULL,
@@ -39,22 +42,23 @@ CREATE TABLE trainers (
     name        VARCHAR(50)     NOT NULL UNIQUE,
     password    varchar(64)     NOT NULL,
     badge       VARCHAR(50)     REFERENCES badges(badge_name),
+    wins        SMALLINT        NOT NULL,
     pokemon_1   VARCHAR(50)     REFERENCES pokemon(poke_name),
     pokemon_2   VARCHAR(50)     REFERENCES pokemon(poke_name),
     pokemon_3   VARCHAR(50)     REFERENCES pokemon(poke_name)
 );
 
-ALTER TABLE pokemon ADD COLUMN  trainer VARCHAR(50) NOT NULL REFERENCES trainers(name);
+ALTER TABLE pokemon ADD COLUMN  trainer VARCHAR(50) NOT NULL REFERENCES trainers(name) ON DELETE CASCADE;
 
 
-INSERT INTO badges (badge_name, effect) VALUES('Boulder', 1.05);
-INSERT INTO badges (badge_name, effect) VALUES('Cascade', 1.10);
-INSERT INTO badges (badge_name, effect) VALUES('Thunder', 1.15);
-INSERT INTO badges (badge_name, effect) VALUES('Rainbow', 1.20);
-INSERT INTO badges (badge_name, effect) VALUES('Soul', 1.25);
-INSERT INTO badges (badge_name, effect) VALUES('Marsh', 1.30);
-INSERT INTO badges (badge_name, effect) VALUES('Volcano', 1.35);
-INSERT INTO badges (badge_name, effect) VALUES('Earth', 1.50);
+INSERT INTO badges (badge_name, effect, req_wins) VALUES('Boulder', 1.05, 5);
+INSERT INTO badges (badge_name, effect, req_wins) VALUES('Cascade', 1.10, 15);
+INSERT INTO badges (badge_name, effect, req_wins) VALUES('Thunder', 1.15, 30);
+INSERT INTO badges (badge_name, effect, req_wins) VALUES('Rainbow', 1.20, 50);
+INSERT INTO badges (badge_name, effect, req_wins) VALUES('Soul', 1.25, 75);
+INSERT INTO badges (badge_name, effect, req_wins) VALUES('Marsh', 1.30, 100);
+INSERT INTO badges (badge_name, effect, req_wins) VALUES('Volcano', 1.35, 150);
+INSERT INTO badges (badge_name, effect, req_wins) VALUES('Earth', 1.50, 250);
 
 
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'normal');
@@ -72,15 +76,6 @@ INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'bug');
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'rock');
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'ghost');
 INSERT INTO element_types VALUES(nextval('element_types_type_id_seq'), 'dragon');
-
-
-INSERT INTO trainers (name, password) VALUES('Scott', 'Tolman');
-
-
-INSERT INTO pokemon (poke_name, level, trainer, type_1, hp, attack, defense, speed) VALUES ('Bulbasaur',1, 'Scott', 'grass', 4, 3, 1, 2);
-INSERT INTO pokemon (poke_name, level, trainer, type_1, hp, attack, defense, speed) VALUES ('Ivysaur', 12, 'Scott', 'grass', 35, 20, 10, 10);
-INSERT INTO pokemon (poke_name, level, trainer, type_1, hp, attack, defense, speed) VALUES ('Charmander', 1, 'Scott', 'fire', 3, 4, 2, 1);
-INSERT INTO pokemon (poke_name, level, trainer, type_1, hp, attack, defense, speed) VALUES ('Squirtle', 1, 'Scott', 'water', 4, 2, 3, 1);
 
 
 INSERT INTO type_vs_type VALUES(nextval('type_vs_type_vs_id_seq'),'normal', 'normal',    1);

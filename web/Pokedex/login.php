@@ -4,21 +4,22 @@ session_start();
 
 try
 {
-//   $dbuser = 'postgres';
-//   $dbpassword = 'CS313-PHP';
-//   $db = new PDO('pgsql:host=127.0.0.1;dbname=postgres', $dbuser, $dbpassword);
+    $dbUrl = getenv('DATABASE_URL');
 
-$dbUrl = getenv('DATABASE_URL');
-
-$dbopts = parse_url($dbUrl);
-
-$dbHost = $dbopts["host"];
-$dbPort = $dbopts["port"];
-$dbUser = $dbopts["user"];
-$dbPassword = $dbopts["pass"];
-$dbName = ltrim($dbopts["path"],'/');
-
-$db = new PDO("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+    if ($dbUrl) {
+        $dbopts = parse_url($dbUrl);
+        $dbHost = $dbopts["host"];
+        $dbPort = $dbopts["port"];
+        $dbUser = $dbopts["user"];
+        $dbPassword = $dbopts["pass"];
+        $dbName = ltrim($dbopts["path"],'/');
+        $db = new PDO("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+    }
+    else {
+        $dbuser = 'postgres';
+        $dbpassword = 'CS313-PHP';
+        $db = new PDO('pgsql:host=127.0.0.1;dbname=postgres', $dbuser, $dbpassword);
+    }
 }
 catch (PDOException $ex)
 {
@@ -37,10 +38,15 @@ $stmt = $db->prepare('SELECT password FROM trainers WHERE name = :username');
   $rows = $stmt->fetch();
   $dbPass = $rows[0];
 
-if ($dbPass == $_POST['password'])
+if (password_verify($_POST['password'], $dbPass))
     $_SESSION[$username]['auth'] = true;
 else
     $_SESSION[$username]['auth'] = false;
+
+if ($_SESSION[$username]['auth']){
+    header('Location: trainer.php');
+    exit();
+}
 
 ?>
 
@@ -56,16 +62,8 @@ else
 </head>
 <body>
     <div class="banner">
-        <?php
-        if ($_SESSION[$username]['auth']){
-            echo "<h1> Welcome $username </h1>";
-            echo "click <a href='trainer.php'> here </a> to go to your account";
-        }
-        else {
-            echo "<h1>Sorry Team Rocket! Wrong TrainerName or password</h1> <br>
-            <h2>click <a href='index.html'>here </a> to try again</h2>";
-        }
-        ?>
+            <h1>Sorry Team Rocket! Wrong TrainerName or password</h1> <br>
+            <h2>click <a href='index.html'>here </a> to try again</h2>
     </div>
 </body>
 </html

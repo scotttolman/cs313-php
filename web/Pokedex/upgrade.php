@@ -2,6 +2,7 @@
 
 session_start();
 $username = $_SESSION['username'];
+$poke_name = $_POST['poke_name'];
 
 try
 {
@@ -28,12 +29,16 @@ catch (PDOException $ex)
   die();
 }
 
-$sql = "SELECT type_name FROM element_types";
+$sql = "SELECT * FROM pokemon WHERE poke_name = :poke_name";
 $stmt = $db->prepare($sql);
+$stmt->bindValue(':poke_name', $poke_name);
 $stmt->execute();
-$types = $stmt->fetchall(PDO::FETCH_NUM);
+$pk = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // echo "<pre>" . print_r($types,1) . "</pre>";
+
+$pts = $pk['stat_points'];
+$total_pts = $pts + $pk[hp] + $pk[attack] + $pk[defense] + $pk[speed];
 
 ?>
 
@@ -48,51 +53,41 @@ $types = $stmt->fetchall(PDO::FETCH_NUM);
     <script src="pokedex.js"></script>
 </head>
 <body>
+    <?php
+    echo "
     <div>
-        <h1>Create new Pokémon for the Pokédex</h1>
+        <h1>Upgrade $pk[poke_name]</h1>
+        <h3>Stat Points Available: $pts</h3>
     </div>
     <div>
-        <h3>Stat Points Available: <span id="stat_points">20</span></h3>
-        <form action="choosePokemon.php" method="post">
+        <form action='choosePokemon.php' method='post'>
             <table>
                 <tr>
                     <td>Pokémon name</td>
-                    <td><input type="text" name="pName" id="pName"></td>
-                </tr>
-                <tr>
-                    <td>Type</td>
-                    <td>
-                        <select name="type_1" id="type_1">
-                            <?php
-                            for ($i = 0; $i < 15; $i++) {
-                                $type = $types[$i];
-                                echo "<option value= $type[0]>$type[0]</option>";
-                                echo "type = $type[0]";
-                            }
-                            ?>
-                        </select>
-                    </td>
+                    <td><input type='text' name='pkName' id='pkName' value=$pk[poke_name]></td>
                 </tr>
                 <tr>
                     <td>HP</td>
-                    <td><input type="number" name="hp" id="hp"></td>
+                    <td><input type='number' name='hp' id='hp' value=$pk[hp]></td>
                 </tr>
                 <tr>
                     <td>Attack</td>
-                    <td><input type="number" name="attack" id="attack"></td>
+                    <td><input type='number' name='attack' id='attack' value=$pk[attack]></td>
                 </tr>
                 <tr>
                     <td>Defense</td>
-                    <td><input type="number" name="defense" id="defense"></td>
+                    <td><input type='number' name='defense' id='defense' value=$pk[defense]></td>
                 </tr>
                 <tr>
                     <td>Speed</td>
-                    <td><input type="number" name="speed" id="speed"></td>
+                    <td><input type='number' name='speed' id='speed' value=$pk[speed]></td>
                 </tr>
             </table>
-            <button><a href="choosePokemon.php">Cancel</a></button>
-            <input type="submit" value="Submit">
+            <input type='hidden' name='pts' value=$total_pts>
+            <button><a href='choosePokemon.php'>Cancel</a></button>
+            <input type='submit' value='Submit'>
         </form>
-    </div>
+    </div>";
+    ?>
 </body>
 </html>

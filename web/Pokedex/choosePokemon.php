@@ -5,21 +5,22 @@ $username = $_SESSION['username'];
 
 try
 {
-//   $dbuser = 'postgres';
-//   $dbpassword = 'CS313-PHP';
-//   $db = new PDO('pgsql:host=127.0.0.1;dbname=postgres', $dbuser, $dbpassword);
+    $dbUrl = getenv('DATABASE_URL');
 
-$dbUrl = getenv('DATABASE_URL');
-
-$dbopts = parse_url($dbUrl);
-
-$dbHost = $dbopts["host"];
-$dbPort = $dbopts["port"];
-$dbUser = $dbopts["user"];
-$dbPassword = $dbopts["pass"];
-$dbName = ltrim($dbopts["path"],'/');
-
-$db = new PDO("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+    if ($dbUrl) {
+        $dbopts = parse_url($dbUrl);
+        $dbHost = $dbopts["host"];
+        $dbPort = $dbopts["port"];
+        $dbUser = $dbopts["user"];
+        $dbPassword = $dbopts["pass"];
+        $dbName = ltrim($dbopts["path"],'/');
+        $db = new PDO("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+    }
+    else {
+        $dbuser = 'postgres';
+        $dbpassword = 'CS313-PHP';
+        $db = new PDO('pgsql:host=127.0.0.1;dbname=postgres', $dbuser, $dbpassword);
+    }
 }
 catch (PDOException $ex)
 {
@@ -28,24 +29,62 @@ catch (PDOException $ex)
 }
 
 if (isset($_POST['pName'])) {
-    $sql = "INSERT INTO pokemon (poke_name, level, trainer, type_1, type_2, hp, attack, defense, speed) VALUES (:pname, 1, :trainer, :t1, :t2, :hp, :att, :de, :sp)";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':pname', $_POST['pName']);
-    $stmt->bindValue(':trainer', $username);
-    $stmt->bindValue(':t1', $_POST['type_1']);
-    $stmt->bindValue(':t2', $_POST['type_2']);
-    $stmt->bindValue(':hp', $_POST['hp']);
-    $stmt->bindValue(':att', $_POST['attack']);
-    $stmt->bindValue(':de', $_POST['defense']);
-    $stmt->bindValue(':sp', $_POST['speed']);
-    $success = $stmt->execute();
-    if ($success)
-        echo "Pokemon added";
-    else
-        echo "Error adding Pokemon";
+    $pts = 20;
+    $pts -= $_POST['hp'];
+    $pts -= $_POST['attack'];
+    $pts -= $_POST['defense'];
+    $pts -= $_POST['speed'];
+    if ($pts >= 0) {
+        $sql = "INSERT INTO pokemon (poke_name, level, xp, lvl_up, trainer, type_1, hp, attack, defense, speed, stat_points) VALUES (:pname, 1, 10, 21, :trainer, :t1, :hp, :att, :de, :sp, :pts)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':pname', $_POST['pName']);
+        $stmt->bindValue(':trainer', $username);
+        $stmt->bindValue(':t1', $_POST['type_1']);
+        $stmt->bindValue(':hp', $_POST['hp']);
+        $stmt->bindValue(':att', $_POST['attack']);
+        $stmt->bindValue(':de', $_POST['defense']);
+        $stmt->bindValue(':sp', $_POST['speed']);
+        $stmt->bindValue(':pts', $pts);
+        $success = $stmt->execute();
+        if ($success)
+            echo "Pokemon added";
+        else
+            echo "Something went wrong";
+    }
+    else{
+        echo "You spent more Stat Points than you have!";
+    }
+    
 }
 
-$stmt = $db->prepare('SELECT poke_name, level, type_1, type_2, hp, attack, defense, speed FROM pokemon WHERE trainer = :username');
+
+if (isset($_POST['pkName'])) {
+    $pts = $_POST['pts'];
+    $pts -= $_POST['hp'];
+    $pts -= $_POST['attack'];
+    $pts -= $_POST['defense'];
+    $pts -= $_POST['speed'];
+    if ($pts >= 0) {
+        $sql = 'UPDATE pokemon SET stat_points = :pts, hp = :hp, attack = :att, defense = :de, speed = :sp WHERE poke_name = :pname';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':pname', $_POST['pkName']);
+        $stmt->bindValue(':hp', $_POST['hp']);
+        $stmt->bindValue(':att', $_POST['attack']);
+        $stmt->bindValue(':de', $_POST['defense']);
+        $stmt->bindValue(':sp', $_POST['speed']);
+        $stmt->bindValue(':pts', $pts);
+        $success = $stmt->execute();
+        if ($success)
+            echo "Upgraded $_POST[pkName]";
+        else
+            echo "Something went wrong";
+    }
+    else{
+        echo "You spent more Stat Points than you have!";
+    }
+}
+
+$stmt = $db->prepare('SELECT poke_name, level, type_1, hp, attack, defense, speed, stat_points FROM pokemon WHERE trainer = :username');
 $stmt->bindValue(':username', $username);
 $stmt->execute();
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -66,6 +105,8 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <button><a href="createPokemon.php">Create Pokemon</a></button>
+    <button><a href="upgradable.php">Upgrade Pokemon</a></button>
+    <button><a href="deletePokemon.php">Delete Pokemon</a></button>
     <br>
     <br>
     <br>
@@ -77,11 +118,11 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <th>3rd</th>
             <th>Pokémon</th>
             <th>Type</th>
-            <th>Type</th>
             <th>HP</th>
             <th>Attack</th>
             <th>Defense</th>
             <th>Speed</th>
+            <th>Stat Pts<th>
         </tr>
         <?php
         for ($i = 0; $i < sizeof($rows); $i++) {
@@ -93,11 +134,11 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <td><input type='radio' name='third' value= $row[poke_name]></td>
                 <td>$row[poke_name]</td>
                 <td>$row[type_1]</td>
-                <td>$row[type_2]</td>
                 <td>$row[hp]</td>
                 <td>$row[attack]</td>
                 <td>$row[defense]</td>
                 <td>$row[speed]</td>
+                <td>$row[stat_points]</td>
             </tr>";
         }
         ?>

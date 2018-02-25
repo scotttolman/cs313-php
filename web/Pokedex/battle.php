@@ -28,30 +28,6 @@ catch (PDOException $ex)
   die();
 }
 
-// echo "<pre>" . print_r($_POST,1) . "</pre>";
-
-if (isset($_POST['first'])) {
-    $updatePokemon = $db->prepare("UPDATE trainers SET pokemon_1 = :first WHERE name = :username");
-    $updatePokemon->bindParam(':username', $username);
-    $updatePokemon->bindParam(':first', $_POST['first']);
-    $updatePokemon->execute();
-}
-
-if (isset($_POST['second'])) {
-    $sql = "UPDATE trainers SET pokemon_2 = :second WHERE name = :username";
-    $updatePokemon = $db->prepare($sql);
-    $updatePokemon->bindParam(':username', $username);
-    $updatePokemon->bindParam(':second', $_POST['second']);
-    $updatePokemon->execute();
-}
-
-if (isset($_POST['third'])) {
-    $updatePokemon = $db->prepare("UPDATE trainers SET pokemon_3 = :third WHERE name = :username");
-    $updatePokemon->bindParam(':username', $username);
-    $updatePokemon->bindParam(':third', $_POST['third']);
-    $updatePokemon->execute();
-}
-
 $stmt = $db->prepare('SELECT badge, pokemon_1, pokemon_2, pokemon_3 FROM trainers WHERE name = :name');
 $stmt->bindValue(':name', $username);
 $stmt->execute();
@@ -61,19 +37,19 @@ $pokemon_1 = $row['pokemon_1'];
 $pokemon_2 = $row['pokemon_2'];
 $pokemon_3 = $row['pokemon_3'];
 
-$stmt = $db->prepare('SELECT poke_name, level, type_1, hp, attack, defense, speed, stat_points FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
+$stmt = $db->prepare('SELECT poke_name, level, type_1, hp, attack, defense, speed FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
 $stmt->bindValue(':name', $pokemon_1);
 $stmt->bindValue(':trainer', $username);
 $stmt->execute();
 $p1 = $stmt->fetch(PDO::FETCH_NUM);
 
-$stmt = $db->prepare('SELECT poke_name, level, type_1, hp, attack, defense, speed, stat_points FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
+$stmt = $db->prepare('SELECT poke_name, level, type_1, hp, attack, defense, speed FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
 $stmt->bindValue(':name', $pokemon_2);
 $stmt->bindValue(':trainer', $username);
 $stmt->execute();
 $p2 = $stmt->fetch(PDO::FETCH_NUM);
 
-$stmt = $db->prepare('SELECT poke_name, level, type_1, hp, attack, defense, speed, stat_points FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
+$stmt = $db->prepare('SELECT poke_name, level, type_1, hp, attack, defense, speed FROM pokemon WHERE poke_name = :name AND trainer = :trainer');
 $stmt->bindValue(':name', $pokemon_3);
 $stmt->bindValue(':trainer', $username);
 $stmt->execute();
@@ -82,6 +58,8 @@ $p3 = $stmt->fetch(PDO::FETCH_NUM);
 $stmt = $db->prepare('SELECT name, pokemon_1, pokemon_2, pokemon_3 FROM trainers');
 $stmt->execute();
 $profiles = $stmt->fetchAll(PDO::FETCH_NUM);
+
+// echo "<pre>" . print_r($profiles,1) . "</pre>";
 
 ?>
 
@@ -97,8 +75,7 @@ $profiles = $stmt->fetchAll(PDO::FETCH_NUM);
 </head>
 <body>
     <div>
-    <button><a href="choosePokemon.php">Choose Pokemon</a></button>
-    <button><a href="battle.php">Battle!</a></button>
+    <button><a href="trainer.php">Trainer page</a></button>
     <button><a href="logout.php">logout</a></button>
     </div>
 
@@ -119,11 +96,11 @@ $profiles = $stmt->fetchAll(PDO::FETCH_NUM);
                     <th>Pokemon</th>
                     <th>Level</th>
                     <th>Type 1</th>
+                    <th>Type 2</th>
                     <th>HP</th>
                     <th>Attack</th>
                     <th>Defense</th>
                     <th>Speed</th>
-                    <th>Stat Points</th>
                 </tr>
                 <tr>";
                     for ($i = 0; $i < 8; $i++) {
@@ -145,6 +122,35 @@ $profiles = $stmt->fetchAll(PDO::FETCH_NUM);
                 </tr>";
                 ?>
             </table>
+            <br>
+            <br>
+            <?php
+            $cnt = count($profiles);
+            for ($i = 0; $i < $cnt; $i++) {
+                $profile = $profiles[$i];
+                if ($profile[0] != $username) {
+                    echo "
+                    <table>
+                        <tr>
+                            <th>$profile[0]</th>
+                        </tr>
+                        <tr>
+                            <td>$profile[1]</td>
+                        <tr>                        
+                            <td>$profile[2]</td>
+                        </tr>
+                            <td>$profile[3]</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <form action='battling.php' method='post'>
+                        <input type='hidden' name='trainer' value=$profile[0]>
+                        <input type='submit' value='Battle $profile[0]'>
+                    </form>
+                    <br><br>";
+                }
+            }
+            ?>
         </div>        
     </div>
 </body>
