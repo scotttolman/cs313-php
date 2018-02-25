@@ -247,11 +247,10 @@ while ($finished == false) {
     $stmt->bindParam(':poke_name', $won);
     $success = $stmt->execute();
     if ($success) {
-        echo "Stat grab successful";
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     else {
-        echo "XP select failed";
+        echo "Stat grab failed";
     }
 
     $xp;
@@ -282,24 +281,22 @@ while ($finished == false) {
         $pts += 3;
         $up = 10;
         $add = 10;
-        for ($i = 1; i < $level; $i++){
+        for ($i = 1; $i < $level; $i++){
             $add *= 1.03;
             $up += $add;
         }
         $lvl_up = $up;
     }
 
-
     $sql = 'UPDATE pokemon SET xp = :xp, lvl_up = :lvl_up, level = :level, stat_points = :pts WHERE poke_name = :poke_name';
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':poke_name', $won);
     $stmt->bindParam(':xp', $xp);
-    $stmt->bindParam(':lvl_up', $lvl_up);
+    $stmt->bindParam(':lvl_up', intval($lvl_up));
     $stmt->bindParam(':level', $level);
     $stmt->bindParam(':pts', $pts);
     $success = $stmt->execute();
     if ($success) {
-        echo "Pokemon stats updated";
     }
     else {
         echo "Pokemon stats update failed";
@@ -334,6 +331,10 @@ while ($finished == false) {
         if (!$success) {
             echo "Wins update failed";
         }
+    }
+    if ($w > 4 && $x > 6) {
+        $finished = true;
+        echo "ERROR: SOMETHING IS WRONG!!";
     }
 }
 
